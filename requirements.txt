@@ -1,0 +1,12 @@
+Flask==2.0.1
+Flask-Bcrypt==1.0.1
+Flask-JWT-Extended==4.4.4
+Flask-CORS==3.0.10
+python-dotenv==0.19.0
+Werkzeug==2.0.1
+mutagen==1.45.1
+Unidecode==1.2.0
+requests==2.26.0
+yt-dlp==2023.11.16
+pyperclip==1.8.2
+SQLite3==2.6.0

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body class="bg-gray-900 text-white">
+    
+    <div id="background-container" class="fixed inset-0 z-[-2]"></div>
+    <button id="home-btn" class="fixed top-4 left-4 z-30 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full transition-transform duration-200 transform hover:scale-105">
+  <span id="home-btn-text">DXIV</span>
+</button>
+
+<button id="scroll-to-top" 
+    class="fixed top-4 right-4 p-3 bg-blue-600 text-white rounded-full shadow-lg opacity-0 pointer-events-none transition-opacity duration-500 ease-in-out hover:bg-blue-700"
+    aria-label="Scroll to top"
+    title="Scroll to top">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 19V6" />
+  <path d="M5 13l7-7 7 7" />
+</svg>
+
+</button>
+
+    <header class="bg-black bg-opacity-80 shadow-lg p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold"></h1>
+    <link rel="icon" type="image/png" href="favicon.png"> 
+
+<div class="flex items-center space-x-4">
+  <!-- Search input -->
+    
+
+  <input id="search-input" type="text" placeholder="Search for a song..."
+    class="p-3 bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm border border-gray-600 rounded-lg text-white 
+           focus:outline-none focus:border-blue-500 transition-all duration-300 w-64">
+
+  <button id="queue-toggle-btn"
+    class="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-all duration-200">
+    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M3 5.5h10a1 1 0 0 0 0-2H3a1 1 0 0 0 0 2Zm0 5h10a1 1 0 0 0 0-2H3a1 1 0 0 0 0 2Zm0 5h7a1 1 0 0 0 0-2H3a1 1 0 0 0 0 2Z"/>
+    </svg>
+  </button>
+
+  <button id="upload-song-btn"
+    class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition-transform duration-200 transform hover:scale-105">
+    Upload Song
+  </button>
+  <button id="upload-bg-btn"
+    class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded transition-transform duration-200 transform hover:scale-105">
+    Upload Background
+  </button>
+  
+  <button id="logout-btn"
+    class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-transform duration-200 transform hover:scale-105">
+    Logout
+  </button>
+</div>
+
+</header>
+
+    <main class="p-4">
+        
+        <div id="main-content" class="max-w-7xl mx-auto">
+            <div id="pagination-container" class="flex justify-center items-center gap-4 mt-6">
+                
+                <button id="first-page-btn" 
+        class="bg-gray-800 text-white p-3 rounded-full hover:bg-gray-700 transition-all duration-200 flex items-center justify-center">
+  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="11 19 4 12 11 5"></polyline>
+    <polyline points="19 19 12 12 19 5"></polyline>
+  </svg>
+</button>
+
+    <button id="prev-page-btn" class="button bg-gray-800 text-white px-4 py-2 rounded-full hover:bg-gray-700 transition-all duration-200">Previous Page</button>
+    <span id="page-info" class="text-white font-semibold">Page 1 of 1</span>
+    <button id="next-page-btn" class="button bg-gray-800 text-white px-4 py-2 rounded-full hover:bg-gray-700 transition-all duration-200">Next Page</button>
+    <button id="last-page-btn" 
+        class="bg-gray-800 text-white p-3 rounded-full hover:bg-gray-700 transition-all duration-200 flex items-center justify-center">
+  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="4 5 11 12 4 19"></polyline>
+    <polyline points="12 5 19 12 12 19"></polyline>
+  </svg>
+</button>
+</div>
+            <div id="track-list" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"></div>
+            
+            
+
+            <div id="player" class="mt-6 bg-gray-800 p-4 rounded-lg transition-opacity duration-500 relative z-10 hidden">
+                <div class="flex items-center space-x-4">
+                    <img id="track-thumbnail" src="" alt="Thumbnail" class="w-16 h-16 rounded transition-transform duration-300">
+                    <div>
+                        <h3 id="track-title" class="text-lg font-semibold"></h3>
+                        <p id="track-duration" class="text-sm text-gray-400"></p>
+                    </div>
+                </div>
+                <audio id="audio-player" class="w-full mt-2"></audio>
+                <div class="mt-2 flex items-center space-x-2">
+                    <span id="current-time" class="text-sm text-gray-400">0:00</span>
+                    <input id="seek-slider" type="range" min="0" max="100" value="0" class="w-full h-2 bg-gray-700 rounded-full appearance-none cursor-pointer">
+                    <span id="total-time" class="text-sm text-gray-400">0:00</span>
+                    <button id="loop-btn" class="text-gray-400 hover:text-white transition-colors duration-200">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M5.5 5H18v2.5l3-3v9l-3-3V13H5.5A3.5 3.5 0 012 9.5v-1A3.5 3.5 0 015.5 5zm0 2a1.5 1.5 0 00-1.5 1.5v1A1.5 1.5 0 005.5 11H17V8.5l1.5 1.5v-3L17 8.5V7H5.5z"></path></svg>
+                    </button>
+                </div>
+                <div class="mt-2">
+                    <label for="volume-slider" class="text-sm">Volume:</label>
+                    <input id="volume-slider" type="range" min="0" max="1" step="0.01" value="1" class="w-full transition-all duration-200">
+                </div>
+            </div>
+        </div>
+        <div id="music-player-container" class="fixed inset-0 flex items-center justify-center hidden z-20">
+            <div id="player-bg-blur" class="absolute inset-0 w-full h-full bg-center bg-cover transition-all duration-1000 ease-in-out"></div>
+            <div id="player-content" class="relative flex flex-col items-center justify-center w-full h-full bg-black bg-opacity-50 transition-opacity duration-500">
+                <div id="vinyl-container" class="relative mb-8">
+                    <canvas id="waveCanvas" width="600" height="600" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0"></canvas>
+                   <img id="player-thumbnail" src="" alt="Thumbnail" class="w-64 h-64 rounded-full object-cover shadow-lg relative z-10">
+                    <div class="absolute inset-0 w-64 h-64 border-8 border-gray-800 rounded-full z-20"></div>
+                    <div class="absolute top-1/2 left-1/2 w-8 h-8 bg-gray-900 rounded-full transform -translate-x-1/2 -translate-y-1/2 border-4 border-gray-700 z-20"></div>
+                </div>
+                <h3 id="player-title" class="text-3xl font-bold text-white mb-2 text-shadow"></h3>
+                <p id="player-artist" class="text-lg text-gray-300 mb-6 text-shadow"></p>
+                <div class="w-3/4 max-w-md">
+                    <div class="flex items-center justify-between text-sm text-gray-400 mb-1">
+                        <span id="player-current-time">0:00</span>
+                        <span id="player-total-time">0:00</span>
+                    </div>
+                    <input id="player-seek-slider" type="range" min="0" max="100" value="0" class="w-full h-6 bg-gray-700 rounded-full appearance-none cursor-pointer">
+                    <div class="flex justify-center items-center space-x-6 mt-6">
+                        
+                        <button id="player-prev-btn" class="text-gray-400 hover:text-white transition-colors duration-200">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path></svg>
+                        </button>
+                        <button id="play-pause-btn" class="play rounded-full bg-blue-500 p-4 text-white hover:bg-blue-600 transition-all duration-300 transform hover:scale-110 shadow-lg">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+                        </button>
+                        <button id="player-next-btn" class="text-gray-400 hover:text-white transition-colors duration-200">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M16 6h2v12h-2zm-3.5 6l-8.5 6V6z"></path></svg>
+                        </button>
+                    </div>
+                    <div class="flex justify-center items-center space-x-8 mt-6">
+    <button id="player-shuffle-btn" class="text-gray-400 hover:text-white transition-colors duration-200">
+        <svg class="shuffleControl" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="24" height="24" fill="currentColor">
+  <path d="M13.0303 7.03033L15.5607 4.5L13.0303 1.96967L11.9697 3.03033L12.6894 3.75H12.2443C10.9235 3.75 9.66227 4.29996 8.76351 5.26786L7.25 6.89779L5.73649 5.26786C4.83773 4.29996 3.57655 3.75 2.25572 3.75H1V5.25H2.25572C3.15945 5.25 4.02236 5.62629 4.6373 6.28853L6.22652 8L4.6373 9.71147C4.02236 10.3737 3.15945 10.75 2.25572 10.75H1V12.25H2.25572C3.57655 12.25 4.83773 11.7 5.73649 10.7321L7.25 9.10221L8.76351 10.7321C9.66227 11.7 10.9235 12.25 12.2443 12.25H12.6893L11.9697 12.9697L13.0303 14.0303L15.5607 11.5L13.0303 8.96967L11.9697 10.0303L12.6894 10.75H12.2443C11.3406 10.75 10.4776 10.3737 9.8627 9.71147L8.27348 8L9.8627 6.28853C10.4776 5.62629 11.3406 5.25 12.2443 5.25H12.6893L11.9697 5.96967L13.0303 7.03033Z"/>
+</svg>
+
+    </button>
+    <button id="player-loop-btn" class="text-gray-400 hover:text-white transition-colors duration-200">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"></path>
+        </svg>
+    </button>
+    <button id="player-volume-btn" class="text-gray-400 hover:text-white transition-colors duration-200">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path>
+        </svg>
+    </button>
+    <button id="equalizer-btn" class="text-gray-400 hover:text-white transition-colors duration-200 eq-toggle-btn">Equalizer</button>
+    <button id="toggle-wave-btn" class="text-gray-400 hover:text-white transition-colors duration-200">🌊 Wave</button>
+    <button id="simplify-wave-btn" class="text-gray-400 hover:text-white transition-colors duration-200 ml-2">Requires a mid-range or better device to use wave!(Click to disable this warning)</button>
+</div>
+
+                </div>
+            </div>
+        </div>
+        <div id="equalizer-panel" class="fixed bottom-0 left-0 w-full bg-gray-700 p-4 rounded-t-lg transition-all duration-300 ease-in-out z-20">
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="text-lg font-semibold">Adjust Equalizer</h4>
+                <div class="flex space-x-2">
+                    <button id="bitrate-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-1 px-2 rounded transition-transform duration-200 transform hover:scale-105">Bitrate</button>
+                    <button id="presets-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-1 px-2 rounded transition-transform duration-200 transform hover:scale-105">Fast</button>
+                    <button id="reset-equalizer" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-1 px-2 rounded transition-transform duration-200 transform hover:scale-105">Reset</button>
+                </div>
+            </div>
+            <div id="equalizer-sliders" class="grid grid-cols-6 gap-2"></div>
+            <div id="equalizer-presets" class="absolute bottom-full right-0 mb-2 w-48 bg-gray-800 rounded-lg shadow-lg p-2 hidden"></div>
+            <div id="bitrate-presets" class="absolute bottom-full right-0 mb-2 w-48 bg-gray-800 rounded-lg shadow-lg p-2 hidden"></div>
+        </div>
+        <div id="volume-panel" class="fixed bottom-0 left-0 w-full bg-gray-700 p-4 rounded-t-lg hidden transition-all duration-300 ease-in-out z-20">
+            <div class="flex items-center space-x-4">
+                <label for="volume-slider" class="text-sm text-white">Âm lượng:</label>
+                <input id="volume-slider" type="range" min="0" max="1" step="0.01" value="1" class="w-full h-2 bg-gray-600 rounded-full appearance-none cursor-pointer">
+            </div>
+        </div>
+        <div id="upload-song-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden transition-opacity duration-300 z-20">
+            <div class="bg-gray-800 p-6 rounded-lg w-full max-w-md transform transition-transform duration-300 modal-content">
+                <h3 class="text-lg font-semibold mb-4">Tải Nhạc Lên</h3>
+                <form id="upload-song-form">
+                    <div class="mb-4">
+                        <style>
+                            @keyframes rainbow {
+                            0%   { color: red; }
+                            14%  { color: orange; }
+                            28%  { color: yellow; }
+                            42%  { color: green; }
+                            57%  { color: blue; }
+                            71%  { color: indigo; }
+                            85%  { color: violet; }
+                            100% { color: red; }
+                        }
+                        .rainbow-link {
+                            animation: rainbow 15s infinite;
+                            text-decoration: underline;
+                        }
+                        </style>
+                        <label class="block text-sm mb-1 text-red-600">
+    <span style="color: white;">Tên bài hát</span> nếu upload bị lỗi thì lên web 
+    <a href="https://www.freeconvert.com/mp3-converter" target="_blank" class="rainbow-link">
+        https://www.freeconvert.com/mp3-converter
+    </a> 
+    covert file thành mp3, wav lại (kể cả khi file đó đang là .mp3, .wav!), không kí tự đặt biệt       
+    <span style="color:green;">--VD:</span> 
+    <span style="background-color:rgb(106, 114, 24);">!@#$%^&*()-,...</span>
+</label>
+
+                        <input type="text" name="title" required class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white transition-all duration-200">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm mb-1">File MP3:</label>
+                        <input type="file" name="song" accept=".mp3" required class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white transition-all duration-200">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm mb-1">Thumbnail (JPG/PNG):</label>
+                        <input type="file" name="thumbnail" accept=".jpg,.png" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white transition-all duration-200">
+                    </div>
+
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" id="cancel-song-upload" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded transition-transform duration-200 transform hover:scale-105">Hủy</button>
+                         <button type="button" id="upwith-link-btn" class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded transition-transform duration-200 transform hover:scale-105">Upload With Link</button>
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-transform duration-200 transform hover:scale-105">Tải Lên</button>
+                    </div>
+                </form>
+                  <div id="link-upload-container" class="hidden">
+            <div class="mb-4">
+                <label class="block text-sm mb-1">Nhập link nhạc(soundcloud và youtube) khi sử dụng tính năng này thì thumbnail nhạc tự động sẽ bị sida sẽ xử lí âm thanh nữa nên lâu lâu lâu hơn:</label>
+                <input type="text" id="song-link-input" placeholder="https://example.com/song.mp3" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white">
+            </div>
+            <div class="flex justify-end space-x-2">
+                <button type="button" id="cancel-link-upload" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded transition-transform duration-200 transform hover:scale-105">Hủy</button>
+                <button type="button" id="back-to-file-upload" class="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded transition-transform duration-200 transform hover:scale-105">Quay lại</button>
+                <button type="button" id="submit-link-upload" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-transform duration-200 transform hover:scale-105">Upload</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+            </div>
+        </div>
+
+
+        <div id="upload-bg-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden transition-opacity duration-300 z-20">
+            <div class="bg-gray-800 p-6 rounded-lg w-full max-w-md transform transition-transform duration-300 modal-content">
+                <h3 class="text-lg font-semibold mb-4">Tải Background Lên</h3>
+                <form id="upload-bg-form">
+                    <div class="mb-4">
+                        <label class="block text-sm mb-1">File (MP4/PNG/JPG. Wait 30–60 seconds for a successful upload.):</label>
+                        <input type="file" name="file" accept=".mp4,.png,.jpg,.jpeg" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white transition-all duration-200">
+                    </div>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" id="cancel-bg-upload" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded transition-transform duration-200 transform hover:scale-105">Hủy</button>
+                        <button type="submit" class="bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded transition-transform duration-200 transform hover:scale-105">Tải Lên</button>
+                    </div>
+                </form>
+                <div id="bg-list" class="mt-4 max-h-48 overflow-y-auto">
+                    <h4 class="text-sm font-semibold mb-2">Background Có Sẵn</h4>
+                    <div id="bg-items" class="grid grid-cols-2 gap-2"></div>
+                </div>
+            </div>
+        </div>
+        <!-- MINIIIIIIII -->
+        <div id="home-container" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 w-96 h-16 bg-gray-800 bg-opacity-30 backdrop-filter backdrop-blur-lg rounded-full shadow-lg transition-all duration-500 ease-in-out z-30">
+    <div id="mini-player" class="flex items-center justify-between h-full px-4">
+
+    <div id="mini-player">
+    <img id="mini-thumbnail" src="https://via.placeholder.com/40" alt="Traqfck Thumbnail"
+         class="w-10 h-10 rounded-full object-cover">
+
+    <span id="mini-track-title"
+          class="text-sm font-semibold text-white truncate w-40 ml-2"></span>
+
+    <button id="player-mini-prev-btn" class="text-gray-400 hover:text-white transition-colors duration-200 ml-2">
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="14 18 8 12 14 6" />
+</svg>
+
+
+</button>
+
+<button id="mini-play-pause-btn" class="text-gray-400 hover:text-white transition-colors duration-200">
+  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+</button>
+
+<button id="player-mini-next-btn" class="text-gray-400 hover:text-white transition-colors duration-200 ml-2">
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="10 6 16 12 10 18" />
+</svg>
+
+</button>
+
+
+    <span id="mini-current-time" class="text-sm text-gray-400">0:00</span>
+
+    <input id="mini-seek-slider" type="range" min="0" max="100" value="0"
+           class="w-24 h-1 bg-gray-700 rounded-full appearance-none cursor-pointer mx-2">
+
+    <span id="mini-total-time" class="text-sm text-gray-400">0:00</span>
+
+    <button id="mini-volume-btn" class="text-gray-400 hover:text-white transition-colors duration-200 ml-2">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
+    </button>
+
+    <button id="mini-loop-btn" class="text-gray-400 hover:text-white transition-colors duration-200 ml-2">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"></path></svg>
+    </button>
+    <button id="mini-shuffle-btn" class="text-gray-400 hover:text-white transition-colors duration-200 ml-2" title="Shuffle">
+  <svg class="shuffleControl" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="20" height="20" fill="currentColor">
+    <path d="M13.0303 7.03033L15.5607 4.5L13.0303 1.96967L11.9697 3.03033L12.6894 3.75H12.2443C10.9235 3.75 9.66227 4.29996 8.76351 5.26786L7.25 6.89779L5.73649 5.26786C4.83773 4.29996 3.57655 3.75 2.25572 3.75H1V5.25H2.25572C3.15945 5.25 4.02236 5.62629 4.6373 6.28853L6.22652 8L4.6373 9.71147C4.02236 10.3737 3.15945 10.75 2.25572 10.75H1V12.25H2.25572C3.57655 12.25 4.83773 11.7 5.73649 10.7321L7.25 9.10221L8.76351 10.7321C9.66227 11.7 10.9235 12.25 12.2443 12.25H12.6893L11.9697 12.9697L13.0303 14.0303L15.5607 11.5L13.0303 8.96967L11.9697 10.0303L12.6894 10.75H12.2443C11.3406 10.75 10.4776 10.3737 9.8627 9.71147L8.27348 8L9.8627 6.28853C10.4776 5.62629 11.3406 5.25 12.2443 5.25H12.6893L11.9697 5.96967L13.0303 7.03033Z"/>
+  </svg>
+</button>
+
+
+    <button id="equalizer-mini-btn">Equalizer</button>
+    <button id="boost-volume-btn">Boost</button>
+<div id="boost-container" class="hidden mt-2 flex items-center space-x-2">
+    <input id="boost-input" type="number" min="1" max="5" step="0.1" placeholder="Enter boost (1-5)"
+           class="w-24 p-2 rounded bg-gray-700 text-white border border-gray-600">
+    <button id="boost-confirm-btn"
+            class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-3 rounded">Apply</button>
+</div>
+    
+
+    
+</div>
+
+
+<!-- MINIIIIIIII -->
+
+
+    </main>
+    <script src="dashboard.js"></script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96bef86bdc155097',t:'MTc1NDY1NTY1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>

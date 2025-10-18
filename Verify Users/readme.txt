@@ -1,0 +1,1 @@
+Users who register will be on the pending list. You need to click on "run.bat" to run the file to verify the account for that user.

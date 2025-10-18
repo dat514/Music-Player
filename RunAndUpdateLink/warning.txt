@@ -1,0 +1,2 @@
+when error:
+pip install -U yt-dlp

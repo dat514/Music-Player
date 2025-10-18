@@ -1,0 +1,1 @@
+Install all necessary libraries and install cloudflare.exe then add to environment. double click file "Run.bat",  The system will automatically start.
