@@ -16,7 +16,7 @@ A feature-rich web-based music player application with user authentication, song
 - 🎬 Custom background support (images/videos)
 - 🔗 Direct upload from YouTube/SoundCloud links
 - 🎚️ Volume boost and audio enhancement
-
+ 
 ## 📁 Directory Structure
 
 ```
