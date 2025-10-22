@@ -1,4 +1,4 @@
-# ServerMusicSong - Web Music Player
+# ServerMusicSong - Web Music Player 
 
 A feature-rich web-based music player application with user authentication, song management, and real-time audio visualizations.
 
