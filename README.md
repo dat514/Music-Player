@@ -173,4 +173,8 @@ pip install -U yt-dlp
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Credit
+
+## ⚒️ Credits
+
+- Built with ❤️Python, Flask, CustomTkinter, SQLite3, JWT Extended, mutagen, yt-dlp, FFmpeg, Deezer’s open-source Spleeter AI model, Cloudflare Tunnel, Optional support for ngrok
+
