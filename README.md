@@ -1,6 +1,13 @@
-# ServerMusicSong - Web Music Player 
+# 🎵 ServerMusicSong - Web Music Player
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg?style=flat&logo=python)
+![Flask](https://img.shields.io/badge/Flask-3.0%2B-000000.svg?style=flat&logo=flask)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Version](https://img.shields.io/badge/version-2.0-success.svg?style=flat)
+![Platform](https://img.shields.io/badge/platform-Web_%7C_Desktop_%7C_Mobile-9cf.svg?style=flat&logo=googlechrome)
+![FFmpeg](https://img.shields.io/badge/powered_by-FFmpeg-ff0000.svg?style=flat&logo=ffmpeg)
+![Cloudflare Tunnel](https://img.shields.io/badge/tunnel-Cloudflare-f38020.svg?style=flat&logo=cloudflare)
+![Status](https://img.shields.io/badge/status-actively_developed-brightgreen.svg)
 
-A feature-rich web-based music player application with user authentication, song management, and real-time audio visualizations.
 
 ![ServerMusicSong Screenshot](docs/screenshot.png) <!-- You'll need to add this -->
 
