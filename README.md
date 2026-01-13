@@ -1,5 +1,5 @@
 # 🎵 ServerMusicSong - Web Music Player
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg?style=flat&logo=python)
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg?style=flat&logo=python) 
 ![Flask](https://img.shields.io/badge/Flask-3.0%2B-000000.svg?style=flat&logo=flask)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Version](https://img.shields.io/badge/version-2.0-success.svg?style=flat)
